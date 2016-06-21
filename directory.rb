@@ -14,18 +14,32 @@
 #########################################################
 
 def input_students
-  puts "Please enter the names of the students"
-  puts "To finish, just hit return twice"
-
   students = []
+answer = ''
+until answer == 'no'
 
-  name = gets.chomp
-
-  while !name.empty? do
-    students << {name: name, cohort: :november}
-    puts "Now we have #{students.count} students"
+  puts "Please enter the name of the student"
     name = gets.chomp
-  end
+
+  puts "Which cohort is #{name} joining?"
+    cohort = gets.chomp
+
+  puts "On campus or online?"
+    course = gets.chomp
+
+  puts "What is #{name}'s age?"
+    age = gets.chomp
+
+  puts "Does #{name} have any coding experience?"
+    experience = gets.chomp
+
+    students << {name: name, cohort: cohort, course: course, age: age, experience: experience}
+
+  puts "Would you like to add more students? yes or no?"
+      answer = gets.chomp
+
+end
+      puts "Now we have #{students.count} students"
 
 students
 end
@@ -36,9 +50,15 @@ def print_header
 end
 
 def print_with_each(students)
-  students.each_with_index do |student, i|
-    puts "#{i+1}. #{student[:name]} (#{student[:cohort]} cohort)"
+  if students.empty?
+    puts "No data to print"
+  else
+    width = 30
+    puts "Name".ljust(width) + "Cohort".center(width) + "Details".rjust(width)
+    students.each_with_index do |student, i|
+    puts "#{i+1}. #{student[:name]}".ljust(width) + "#{student[:cohort]}, #{student[:course]}.".center(width) +"Age:#{student[:age]} Coding experience:#{student[:experience]}".rjust(width)
   end
+end
 end
 
 def print_with_until(students)
@@ -86,7 +106,5 @@ def print_shorts(students)
 
 students = input_students
 print_header
-print_with_until(students)
-print_selection("J",students)
-print_shorts(students)
+print_with_each(students)
 print_footer(students)
