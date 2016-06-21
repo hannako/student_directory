@@ -42,7 +42,12 @@ def print_with_each(students)
 end
 
 def print_with_until(students)
-
+  n = students.length
+  count = 1
+  until count == n
+  puts "#{count}. #{students[count][:name]} (#{students[count][:cohort]} cohort)"
+  count +=1
+end
 end
 
 
@@ -81,7 +86,7 @@ def print_shorts(students)
 
 students = input_students
 print_header
+print_with_until(students)
 print_selection("J",students)
 print_shorts(students)
-print(students)
 print_footer(students)
