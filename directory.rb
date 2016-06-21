@@ -15,12 +15,16 @@
 
 def input_students
 students = []
-answer = ''
+add_more = ''
 
-until add_more = "no"
+until add_more == "no"
 
   puts "Please enter the name of the student"
     name = gets.chomp
+    if name == ""
+       name = "missing info"
+    end
+
 
 cohort = ''
   loop do
@@ -33,21 +37,39 @@ cohort = ''
 puts "On campus or online?"
 
   course = gets.chomp
+  if course == ""
+     course = "missing info"
+  end
+
 
 puts "What is #{name}'s age?"
     age = gets.chomp
+    if age == ""
+       age = "missing info"
+    end
 
 puts "Does #{name} have any coding experience?"
     experience = gets.chomp
+    if experience == ""
+       experience = "missing info"
+    end
 
 students << {name: name, cohort: cohort, course: course, age: age, experience: experience}
+  students.each do |student|
+    student.each do |key,value| student[value] == "" ? "missing info" : value
+      end
+    end
+    #if student[name:] == "" or student[course:] == "" or student[age:] == "" or student[experience:] == ""
 
-  puts "Would you like to add more students? yes or no?"
+  loop do
+      puts "Would you like to add more students? yes or no?"
       add_more = gets.chomp.downcase
-
-end
+      break if add_more == "yes" || add_more == "no"
+      puts "please answer yes or no."
+      end
       puts "Now we have #{students.count} students"
 
+end
 students
 
 end
@@ -68,7 +90,7 @@ def print_with_each(students)
 
   else
     width = 30
-    puts "Name".ljust(width) + "Cohort".center(width) + "Details".rjust(width)
+    puts "NAME".ljust(width) + "COHORT".center(width) + "DETAILS".rjust(width)
     students.each_with_index do |student, i|
     puts "#{i+1}. #{student[:name]}".ljust(width) + "#{student[:cohort]}, #{student[:course]}.".center(width) +"Age:#{student[:age]} Coding experience:#{student[:experience]}".rjust(width)
   end
@@ -101,8 +123,8 @@ end
 def print_selection(letter,students)
   selection = []
   students.each do |student|
-    first = student[:name][0].downcase
-    if first == letter.downcase
+    first_letter = student[:name][0].downcase
+    if first_letter == letter.downcase
         selection << student[:name]
     end
   end
@@ -131,9 +153,8 @@ def print_shorts(students)
 
 
 
+print_header
 students = input_students
 print_with_each(students)
-print_header
-print_with_each(students)
 print_footer(students)
-print_selection("k",students)
+#print_selection("k",students)
