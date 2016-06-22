@@ -22,7 +22,7 @@ until add_more == "no"
   puts "Please enter the name of the student"
     name = gets.chomp
     if name == ""
-       name = "missing info"
+      name = "tbc"
     end
 
 
@@ -38,28 +38,31 @@ puts "On campus or online?"
 
   course = gets.chomp
   if course == ""
-     course = "missing info"
+     course = "tbc"
   end
 
 
 puts "What is #{name}'s age?"
     age = gets.chomp
-    if age == ""
-       age = "missing info"
-    end
+  if age == ""
+    age = "tbc"
+  end
 
 puts "Does #{name} have any coding experience?"
     experience = gets.chomp
     if experience == ""
-       experience = "missing info"
+      experience = "tbc"
     end
 
 students << {name: name, cohort: cohort, course: course, age: age, experience: experience}
-  students.each do |student|
-    student.each do |key,value| student[value] == "" ? "missing info" : value
-      end
-    end
-    #if student[name:] == "" or student[course:] == "" or student[age:] == "" or student[experience:] == ""
+
+  # students.each do |student|
+    # student.each_pair do |key,value|
+      # if value == ""
+        # value = "tbc"
+      # end
+    # end
+  # end
 
   loop do
       puts "Would you like to add more students? yes or no?"
@@ -90,9 +93,11 @@ def print_with_each(students)
 
   else
     width = 30
-    puts "NAME".ljust(width) + "COHORT".center(width) + "DETAILS".rjust(width)
+    puts
+    puts "NAME".ljust(width) + "COHORT ".center(width) + "DETAILS".rjust(width)
+    puts "(month/remote or campus)".center(width.* 3)
     students.each_with_index do |student, i|
-    puts "#{i+1}. #{student[:name]}".ljust(width) + "#{student[:cohort]}, #{student[:course]}.".center(width) +"Age:#{student[:age]} Coding experience:#{student[:experience]}".rjust(width)
+    puts "#{i+1}. #{student[:name]}".ljust(width) + "#{student[:cohort]}/ #{student[:course]}.".center(width) +"AGE:#{student[:age]} CODING EXP:#{student[:experience]}".rjust(width)
   end
 end
 end
