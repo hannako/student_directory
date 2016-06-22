@@ -87,7 +87,7 @@ end
 
 ################################################################
 
-def print_with_each(students)
+def print (students) #using the each_with_index method
   if students.empty?
     puts "No data to print"
 
@@ -104,6 +104,20 @@ end
 
 ################################################################
 
+def print_by_cohort(students)
+selection = []
+  puts "Please enter the cohort month."
+  month = gets.chomp.capitalize.to_sym
+
+selection << students.map{|student| student[:name] if student[:cohort] == month}
+
+  puts "COHORT: #{month}"
+  puts "These are the enrolled students: #{selection.flatten.join(" ").capitalize}"
+
+end
+
+################################################################
+
 def print_with_until(students)
   n = students.length
   count = 1
@@ -115,13 +129,9 @@ end
 
 ################################################################
 
-
 def print_footer(names)
   puts "Overall, we have #{names.count} great students."
 end
-
-
-
 
 ################################################################
 
@@ -160,6 +170,6 @@ def print_shorts(students)
 
 print_header
 students = input_students
-print_with_each(students)
+print_by_cohort(students)
 print_footer(students)
 #print_selection("k",students)
