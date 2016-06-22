@@ -1,17 +1,4 @@
-#students =  [
-# {name: "Dr Hannibal Lecter", cohort: :november },
-# {name: "Darth Vader", cohort: :november },
-# {name: "Nurse Ratched",cohort: :november },
-# {name: "Michael Corleone",cohort: :november },
-# {name: "Alex DeLarge",cohort: :november },
-# {name: "The Wicked Witch of the West", cohort: :november },
-# {name: "Terminator", cohort: :november },
-# {name: "Freddy Krueger",cohort: :november },
-# {name: "The Joker", cohort: :november },
-# {name: "Joffrey Baratheon", cohort: :november },
-# {name: "Norman Bates", cohort: :november }
-#]
-#########################################################
+
 
 def input_students
 students = []
@@ -89,19 +76,18 @@ end
 
 ################################################################
 
-def print (students) #using the each_with_index method
+def print_students(students) #using the each_with_index method
   if students.empty?
     puts "No data to print"
-
   else
     width = 30
     puts
-    puts "NAME".ljust(width) + "COHORT ".center(width) + "DETAILS".rjust(width)
+    puts "NAME".ljust(width) + "COHORT".center(width) + "DETAILS".rjust(width)
     puts "(month/remote or campus)".center(width.* 3)
     students.each_with_index do |student, i|
     puts "#{i+1}. #{student[:name]}".ljust(width) + "#{student[:cohort]}/ #{student[:course]}.".center(width) +"AGE:#{student[:age]} CODING EXP:#{student[:experience]}".rjust(width)
+    end
   end
-end
 end
 
 ################################################################
@@ -132,11 +118,13 @@ end
 ################################################################
 
 def print_footer(names)
+  puts
   if names.length == 1
     puts "Overall we have one great student."
   else
   puts "Overall, we have #{names.count} great students."
 end
+puts "________________________________________________"
 end
 
 ################################################################
@@ -172,10 +160,41 @@ def print_shorts(students)
     end
   end
 
+#######################################################################
 
+def interactive_menu
+  students = []
+  loop do
+  # 1. print the menu and ask the user what to do.
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "9. Exit"
+  # 2. read the input and save it to a variable
+  selection = gets.chomp
+  # 3. do what the user has asked.
+  case selection
+  when "1"
+    students = input_students
+  when "2"
+    print_header
+    print_students(students)
+    print_footer(students)
 
-print_header
-students = input_students
-print_by_cohort(students)
-print_footer(students)
-#print_selection("k",students)
+  when "9"
+    exit
+
+  else
+    puts "I don't know what you mean, try again"
+  end
+  # 4. repeat from step 1.
+  end
+end
+
+###########################################################################
+
+interactive_menu
+# print_header
+# students = input_students
+# print_by_cohort(students)
+# print_footer(students)
+# #print_selection("k",students)
