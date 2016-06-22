@@ -20,7 +20,7 @@ add_more = ''
 until add_more == "no"
 
   puts "Please enter the name of the student"
-    name = gets.chomp
+    name = gets.delete!("\n")
     if name == ""
       name = "tbc"
     end
@@ -36,20 +36,20 @@ cohort = ''
 
 puts "On campus or online?"
 
-  course = gets.chomp
+  course = gets.delete!("\n")
   if course == ""
      course = "tbc"
   end
 
 
 puts "What is #{name}'s age?"
-    age = gets.chomp
+    age = gets.delete!("\n")
   if age == ""
     age = "tbc"
   end
 
 puts "Does #{name} have any coding experience?"
-    experience = gets.chomp
+    experience = gets.delete!("\n")
     if experience == ""
       experience = "tbc"
     end
@@ -66,10 +66,11 @@ students << {name: name, cohort: cohort, course: course, age: age, experience: e
 
   loop do
       puts "Would you like to add more students? yes or no?"
-      add_more = gets.chomp.downcase
+      add_more = gets.delete!("\n").downcase
       break if add_more == "yes" || add_more == "no"
       puts "please answer yes or no."
       end
+
       puts "Now we have #{students.count} students"
 
 end
@@ -130,7 +131,11 @@ end
 ################################################################
 
 def print_footer(names)
+  if names.length == 1
+    puts "Overall we have one great student."
+  else
   puts "Overall, we have #{names.count} great students."
+end
 end
 
 ################################################################
