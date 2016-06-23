@@ -1,7 +1,8 @@
+@students = []
 
+#######################################################################
 
 def input_students
-students = []
 add_more = ''
 
 until add_more == "no"
@@ -10,8 +11,6 @@ until add_more == "no"
     name = gets.delete!("\n")
 if name == ""
     puts "No students entered"
-    exit
-
 
 else
     cohort = ''
@@ -42,15 +41,7 @@ else
         experience = "tbc"
       end
 
-  students << {name: name, cohort: cohort, course: course, age: age, experience: experience}
-
-    # students.each do |student|
-      # student.each_pair do |key,value|
-        # if value == ""
-          # value = "tbc"
-        # end
-      # end
-    # end
+  @students << {name: name, cohort: cohort, course: course, age: age, experience: experience}
 
     loop do
         puts "Would you like to add more students? yes or no?"
@@ -59,13 +50,11 @@ else
         puts "please answer yes or no."
         end
 
-        puts "Now our student count is #{students.count}"
+        puts "Now our student count is #{@students.count}"
   end
 end
-students
 
 end
-
 
 ################################################################
 
@@ -76,28 +65,29 @@ end
 
 ################################################################
 
-def print_students(students) #using the each_with_index method
-  if students.empty?
+def print_students_list #using the each_with_index method
+  if @students.empty?
     puts "No data to print"
   else
     width = 30
     puts
     puts "NAME".ljust(width) + "COHORT".center(width) + "DETAILS".rjust(width)
     puts "(month/remote or campus)".center(width.* 3)
-    students.each_with_index do |student, i|
+    @students.each_with_index do |student, i|
     puts "#{i+1}. #{student[:name]}".ljust(width) + "#{student[:cohort]}/ #{student[:course]}.".center(width) +"AGE:#{student[:age]} CODING EXP:#{student[:experience]}".rjust(width)
     end
   end
 end
 
+
 ################################################################
 
-def print_by_cohort(students)
+def print_by_cohort
 selection = []
   puts "Please enter the cohort month."
   month = gets.chomp.capitalize.to_sym
 
-selection << students.map{|student| student[:name] if student[:cohort] == month}
+selection << @students.map{|student| student[:name] if student[:cohort] == month}
 
   puts "COHORT: #{month}"
   puts "These are the enrolled students: #{selection.flatten.join(" ").capitalize}"
@@ -106,8 +96,8 @@ end
 
 ################################################################
 
-def print_with_until(students)
-  n = students.length
+def print_with_until
+  n = @students.length
   count = 1
   until count == n
   puts "#{count}. #{students[count][:name]} (#{students[count][:cohort]} cohort)"
@@ -117,21 +107,21 @@ end
 
 ################################################################
 
-def print_footer(names)
-  puts
-  if names.length == 1
+def print_footer
+  if @students.count == 1
     puts "Overall we have one great student."
   else
-  puts "Overall, we have #{names.count} great students."
+  puts "Overall, we have #{@students.count} great students."
+  puts "________________________________________________"
+
 end
-puts "________________________________________________"
 end
 
 ################################################################
 
-def print_selection(letter,students)
+def print_selection(letter)
   selection = []
-  students.each do |student|
+  @students.each do |student|
     first_letter = student[:name][0].downcase
     if first_letter == letter.downcase
         selection << student[:name]
@@ -146,9 +136,9 @@ def print_selection(letter,students)
 
 ################################################################
 
-def print_shorts(students)
+def print_shorts
   shorts = []
-  students.each do |student|
+  @students.each do |student|
     if student[:name].length < 12
         shorts << student[:name]
     end
@@ -162,34 +152,38 @@ def print_shorts(students)
 
 #######################################################################
 
-def interactive_menu
-  students = []
-  loop do
-  # 1. print the menu and ask the user what to do.
-  puts "1. Input the students"
-  puts "2. Show the students"
-  puts "9. Exit"
-  # 2. read the input and save it to a variable
-  selection = gets.chomp
-  # 3. do what the user has asked.
+def print_menu
+    puts "1. Input the students"
+    puts "2. Show the students"
+    puts "9. Exit"
+end
+
+#########################################################################
+def process(selection)
   case selection
   when "1"
-    students = input_students
+    input_students
   when "2"
-    print_header
-    print_students(students)
-    print_footer(students)
-
+    show_students
   when "9"
     exit
-
   else
     puts "I don't know what you mean, try again"
   end
-  # 4. repeat from step 1.
-  end
 end
-
+########################################################################
+def show_students
+  print_header
+  print_students_list
+  print_footer
+end
+#######################################################################
+def interactive_menu
+loop do
+  print_menu
+  process(gets.chomp)
+end
+end
 ###########################################################################
 
 interactive_menu
