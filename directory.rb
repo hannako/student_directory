@@ -79,32 +79,6 @@ def print_students_list #using the each_with_index method
   end
 end
 
-
-################################################################
-
-def print_by_cohort
-selection = []
-  puts "Please enter the cohort month."
-  month = STDIN.gets.chomp.capitalize.to_sym
-
-selection << @students.map{|student| student[:name] if student[:cohort] == month}
-
-  puts "COHORT: #{month}"
-  puts "These are the enrolled students: #{selection.flatten.join(" ").capitalize}"
-
-end
-
-################################################################
-
-def print_with_until
-  n = @students.length
-  count = 1
-  until count == n
-  puts "#{count}. #{students[count][:name]} (#{students[count][:cohort]} cohort)"
-  count +=1
-  end
-end
-
 ################################################################
 
 def print_footer
@@ -118,40 +92,6 @@ end
 end
 
 ################################################################
-
-def print_selection(letter)
-  selection = []
-  @students.each do |student|
-    first_letter = student[:name][0].downcase
-    if first_letter == letter.downcase
-        selection << student[:name]
-    end
-  end
-    if selection.length > 0
-      puts " Students with names beginning with '#{letter}': #{selection.join(",")}"
-    else
-      puts "No students with that starting initial sorry."
-    end
-  end
-
-################################################################
-
-def print_shorts
-  shorts = []
-  @students.each do |student|
-    if student[:name].length < 12
-        shorts << student[:name]
-    end
-  end
-    if shorts.length > 0
-      puts "Students with short names: #{shorts.join(", ")}. "
-    else
-      puts "No students with such tiny names."
-    end
-  end
-
-#######################################################################
-#######################################################################
 #######################################################################
 def interactive_menu
 loop do
@@ -163,13 +103,15 @@ end
 def print_menu
     puts "1. Input the students"
     puts "2. Show the students"
-    puts "3. Save the list to students.csv"
-    puts "4. Load the list from students.csv file"
+    puts "3. Save the list"
+    puts "4. Load the list"
     puts "9. Exit"
 end
 
 #########################################################################
 def process(selection)
+  puts "Input acknowledged..."
+
   case selection
   when "1"
     input_students
@@ -180,6 +122,7 @@ def process(selection)
   when "4"
     load_students
   when "9"
+    puts "EXITING"
     exit
   else
     puts "I don't know what you mean, try again"
@@ -193,31 +136,35 @@ def show_students
 end
 ########################################################################
 def save_students
-  file = File.open("students.csv", "w")
+  puts "Which file do you want to save to?"
+  file_choice = gets.chomp
+  file = File.open(file_choice, "w") do |file|
   @students.each do |student|
     student_data = [student[:name],student[:cohort],student[:course],student[:age],student[:experience]]
     csv_line = student_data.join(",")
     file.puts csv_line
   end
-  file.close
+end
 end
 ########################################################################
 
-def load_students(filename = "students.csv")
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
+def load_students
+  puts "What file do you want to load?"
+  file_choice = gets.chomp
+
+  file = File.open(file_choice, "r") do |student|
+  student.readlines.each do |line|
     name, cohort, course, age, experience = line.chomp.split(',')
     @students << {name: name, cohort: cohort.to_sym, course: course, age: age, experience: experience}
   end
-  file.close
+end
 end
 ########################################################################
 
 def try_load_students
   filename = ARGV.first
-if filename.nil?
-  return
-elsif File.exists?(filename)
+return if filename.nil?
+if File.exists?(filename)
     load_students(filename)
     puts "Loaded #{@students.count} from #{filename}"
   else
@@ -225,6 +172,64 @@ elsif File.exists?(filename)
     exit
   end
 end
+
+# def print_selection(letter)
+#   selection = []
+#   @students.each do |student|
+#     first_letter = student[:name][0].downcase
+#     if first_letter == letter.downcase
+#         selection << student[:name]
+#     end
+#   end
+#     if selection.length > 0
+#       puts " Students with names beginning with '#{letter}': #{selection.join(",")}"
+#     else
+#       puts "No students with that starting initial sorry."
+#     end
+#   end
+
+################################################################
+
+# def print_shorts
+#   shorts = []
+#   @students.each do |student|
+#     if student[:name].length < 12
+#         shorts << student[:name]
+#     end
+#   end
+#     if shorts.length > 0
+#       puts "Students with short names: #{shorts.join(", ")}. "
+#     else
+#       puts "No students with such tiny names."
+#     end
+#   end
+
+################################################################
+#
+# def print_by_cohort
+# selection = []
+#   puts "Please enter the cohort month."
+#   month = STDIN.gets.chomp.capitalize.to_sym
+#
+# selection << @students.map{|student| student[:name] if student[:cohort] == month}
+#
+#   puts "COHORT: #{month}"
+#   puts "These are the enrolled students: #{selection.flatten.join(" ").capitalize}"
+#
+# end
+#
+# ################################################################
+#
+# def print_with_until
+#   n = @students.length
+#   count = 1
+#   until count == n
+#   puts "#{count}. #{students[count][:name]} (#{students[count][:cohort]} cohort)"
+#   count +=1
+#   end
+# end
+#
+# ################################################################
 
 try_load_students
 interactive_menu
