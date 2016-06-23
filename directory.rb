@@ -8,7 +8,7 @@ add_more = ''
 until add_more == "no"
 
   puts "Please enter the name of the student"
-    name = gets.delete!("\n")
+    name = STDIN.gets.chomp
 if name == ""
     puts "No students entered"
 
@@ -16,27 +16,27 @@ else
     cohort = ''
     loop do
       puts "Which cohort is #{name} joining?"
-      cohort = gets.chomp.capitalize.to_sym
+      cohort = STDIN.gets.chomp.capitalize.to_sym
         break if (cohort == :January || cohort == :February || cohort == :March || cohort == :April || cohort == :May || cohort == :June || cohort == :July || cohort == :August || cohort == :September || cohort == :October || cohort == :November || cohort == :December)
         puts "Sorry, I didn't get that. Please write the name of the month in full."
       end
 
   puts "On campus or online?"
 
-    course = gets.delete!("\n")
+    course = STDIN.gets.chomp
     if course == ""
        course = "tbc"
     end
 
 
   puts "What is #{name}'s age?"
-      age = gets.delete!("\n")
+      age = STDIN.gets.chomp
     if age == ""
       age = "tbc"
     end
 
   puts "Does #{name} have any coding experience?"
-      experience = gets.delete!("\n")
+      experience = STDIN.gets.chomp
       if experience == ""
         experience = "tbc"
       end
@@ -45,7 +45,7 @@ else
 
     loop do
         puts "Would you like to add more students? yes or no?"
-        add_more = gets.delete!("\n").downcase
+        add_more = STDIN.gets.chomp.downcase
         break if add_more == "yes" || add_more == "no"
         puts "please answer yes or no."
         end
@@ -85,7 +85,7 @@ end
 def print_by_cohort
 selection = []
   puts "Please enter the cohort month."
-  month = gets.chomp.capitalize.to_sym
+  month = STDIN.gets.chomp.capitalize.to_sym
 
 selection << @students.map{|student| student[:name] if student[:cohort] == month}
 
@@ -156,7 +156,7 @@ def print_shorts
 def interactive_menu
 loop do
   print_menu
-  process(gets.chomp)
+  process(STDIN.gets.chomp)
 end
 end
 ###########################################################################
@@ -164,7 +164,7 @@ def print_menu
     puts "1. Input the students"
     puts "2. Show the students"
     puts "3. Save the list to students.csv"
-    puts "4. Load the from students.csv file"
+    puts "4. Load the list from students.csv file"
     puts "9. Exit"
 end
 
@@ -203,8 +203,8 @@ def save_students
 end
 ########################################################################
 
-def load_students
-  file = File.open("students.csv","r")
+def load_students(filename = "students.csv")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort, course, age, experience = line.chomp.split(',')
     @students << {name: name, cohort: cohort.to_sym, course: course, age: age, experience: experience}
@@ -212,9 +212,19 @@ def load_students
   file.close
 end
 ########################################################################
+
+def try_load_students
+  filename = ARGV.first
+if filename.nil?
+  return
+elsif File.exists?(filename)
+    load_students(filename)
+    puts "Loaded #{@students.count} from #{filename}"
+  else
+    puts "Sorry, #{filename} doesn't exist."
+    exit
+  end
+end
+
+try_load_students
 interactive_menu
-# print_header
-# students = input_students
-# print_by_cohort(students)
-# print_footer(students)
-# #print_selection("k",students)
