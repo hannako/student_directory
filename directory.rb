@@ -120,7 +120,7 @@ def process(selection)
   when "3"
     save_students
   when "4"
-    load_students
+    pick_file
   when "9"
     puts "EXITING"
     exit
@@ -148,23 +148,39 @@ end
 end
 ########################################################################
 
-def load_students
-  puts "What file do you want to load?"
-  file_choice = gets.chomp
+def load_students(filename)
 
-  file = File.open(file_choice, "r") do |student|
+  # puts "What file do you want to load?"
+  # file_choice = gets.chomp
+
+  file = File.open(filename, "r") do |student|
   student.readlines.each do |line|
     name, cohort, course, age, experience = line.chomp.split(',')
     @students << {name: name, cohort: cohort.to_sym, course: course, age: age, experience: experience}
   end
 end
 end
+
 ########################################################################
+
+def pick_file
+
+  puts "Which file would you like to load from?"
+  filename = gets.chomp
+  load_students(filename)
+end
+
+
+########################################################################
+
+
 
 def try_load_students
   filename = ARGV.first
-return if filename.nil?
-if File.exists?(filename)
+  if filename.nil?
+    load_students("students.csv")
+    puts "Loaded #{@students.count} students from students.csv"
+  elsif File.exist?(filename)
     load_students(filename)
     puts "Loaded #{@students.count} from #{filename}"
   else
