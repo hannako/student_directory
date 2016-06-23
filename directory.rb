@@ -1,3 +1,4 @@
+require 'csv'
 @students = []
 
 #######################################################################
@@ -135,31 +136,49 @@ def show_students
   print_footer
 end
 ########################################################################
+# def save_students
+#   puts "Which file do you want to save to?"
+#   file_choice = gets.chomp
+#   file = File.open(file_choice, "w") do |file|
+#   @students.each do |student|
+#     student_data = [student[:name],student[:cohort],student[:course],student[:age],student[:experience]]
+#     csv_line = student_data.join(",")
+#     file.puts csv_line
+#   end
+# end
+# end
+
+
 def save_students
   puts "Which file do you want to save to?"
   file_choice = gets.chomp
-  file = File.open(file_choice, "w") do |file|
-  @students.each do |student|
+
+CSV.open("/Users/jessicajones/Google Drive/PROJECTS/student_directory/#{file_choice}", "w") do |csv|
+    @students.each do |student|
     student_data = [student[:name],student[:cohort],student[:course],student[:age],student[:experience]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
+    csv << student_data
   end
 end
 end
 ########################################################################
 
+# def load_students(filename)
+#
+#   file = File.open(filename, "r") do |student|
+#   student.readlines.each do |line|
+#     name, cohort, course, age, experience = line.chomp.split(',')
+#     @students << {name: name, cohort: cohort.to_sym, course: course, age: age, experience: experience}
+#   end
+# end
+# end
+
 def load_students(filename)
-
-  # puts "What file do you want to load?"
-  # file_choice = gets.chomp
-
-  file = File.open(filename, "r") do |student|
-  student.readlines.each do |line|
-    name, cohort, course, age, experience = line.chomp.split(',')
+CSV.foreach("/Users/jessicajones/Google Drive/PROJECTS/student_directory/#{filename}") do |row|
+  name, cohort, course, age, experience = row.join(",").split(",")
     @students << {name: name, cohort: cohort.to_sym, course: course, age: age, experience: experience}
-  end
 end
 end
+
 
 ########################################################################
 
