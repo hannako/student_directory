@@ -42,7 +42,7 @@ else
         experience = "tbc"
       end
 
-  @students << {name: name, cohort: cohort, course: course, age: age, experience: experience}
+add_students
 
     loop do
         puts "Would you like to add more students? yes or no?"
@@ -175,7 +175,7 @@ end
 def load_students(filename)
 CSV.foreach("/Users/jessicajones/Google Drive/PROJECTS/student_directory/#{filename}") do |row|
   name, cohort, course, age, experience = row.join(",").split(",")
-    @students << {name: name, cohort: cohort.to_sym, course: course, age: age, experience: experience}
+    add_students
 end
 end
 
@@ -192,8 +192,6 @@ end
 
 ########################################################################
 
-
-
 def try_load_students
   filename = ARGV.first
   if filename.nil?
@@ -207,7 +205,11 @@ def try_load_students
     exit
   end
 end
-
+########################################################################
+def add_students(name,cohort,course,age,experience)
+  @students << {name: name, cohort: cohort, course: course, age: age, experience: experience}
+end
+########################################################################
 # def print_selection(letter)
 #   selection = []
 #   @students.each do |student|
